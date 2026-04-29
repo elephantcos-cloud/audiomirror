@@ -109,7 +109,7 @@ class AudioPlaybackService : Service() {
                 track.play()
 
                 // If two-way, start sending our mic back to Phone A
-                if (modeByte == MODE_TWO_WAY) {
+                if (modeByte == MODE_TWO_WAY.toByte()) {
                     startTwoWayMicServer()
                 }
 
