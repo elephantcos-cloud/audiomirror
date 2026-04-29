@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="audio_mode_entries">
+        <item>Device Audio Only (Internal sounds)</item>
+        <item>Microphone Only (External sounds)</item>
+        <item>Device + Microphone (Both combined)</item>
+        <item>Two-Way Mic (Like a phone call)</item>
+        <item>Earbuds Mode (Source phone muted)</item>
+    </string-array>
+    <string-array name="audio_mode_values">
+        <item>device_only</item>
+        <item>mic_only</item>
+        <item>device_and_mic</item>
+        <item>two_way_mic</item>
+        <item>mute_source</item>
+    </string-array>
+
+    <string-array name="theme_entries">
+        <item>Dark Theme</item>
+        <item>Light Theme</item>
+    </string-array>
+    <string-array name="theme_values">
+        <item>dark</item>
+        <item>light</item>
+    </string-array>
+</resources>

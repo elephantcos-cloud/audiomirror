@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/pref_category_audio">
+        <ListPreference
+            app:key="audio_mode"
+            app:title="@string/pref_audio_mode_title"
+            app:defaultValue="mic_only"
+            app:entries="@array/audio_mode_entries"
+            app:entryValues="@array/audio_mode_values"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_category_appearance">
+        <ListPreference
+            app:key="app_theme"
+            app:title="@string/pref_theme_title"
+            app:defaultValue="dark"
+            app:entries="@array/theme_entries"
+            app:entryValues="@array/theme_values"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
