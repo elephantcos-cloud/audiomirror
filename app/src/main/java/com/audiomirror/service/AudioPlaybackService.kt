@@ -50,11 +50,7 @@ class AudioPlaybackService : Service() {
         audioMode = AudioMode.fromKey(intent.getStringExtra(EXTRA_MODE))
 
         createNotificationChannel()
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            startForeground(NOTIFICATION_ID, buildNotification(host), ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
-        } else {
-            startForeground(NOTIFICATION_ID, buildNotification(host))
-        }
+        startForeground(NOTIFICATION_ID, buildNotification(host))
         startPlayback(host, port)
         return START_STICKY
     }

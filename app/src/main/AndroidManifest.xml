@@ -11,8 +11,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
 
     <application
@@ -44,20 +42,18 @@
             android:parentActivityName=".activity.AudioMirrorActivity"
             android:exported="false" />
 
-        <!-- stopWithTask="false" keeps service alive when app is cleared from recents -->
+        <!-- No foregroundServiceType — matches TrebleShot which works on all Android versions -->
         <service
             android:name=".service.AudioStreamService"
             android:enabled="true"
             android:exported="false"
-            android:stopWithTask="false"
-            android:foregroundServiceType="microphone" />
+            android:stopWithTask="false" />
 
         <service
             android:name=".service.AudioPlaybackService"
             android:enabled="true"
             android:exported="false"
-            android:stopWithTask="false"
-            android:foregroundServiceType="microphone" />
+            android:stopWithTask="false" />
 
     </application>
 
