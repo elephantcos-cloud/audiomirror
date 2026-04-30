@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import com.audiomirror.App
 import com.audiomirror.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -17,18 +18,21 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
-        // Audio mode pref — disabled for listener or during active streaming
         findPreference<ListPreference>("audio_mode")?.apply {
             summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
             isEnabled = !isListener && !isStreaming
         }
 
-        // Theme pref — always available
         findPreference<ListPreference>("app_theme")?.apply {
             summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
-            setOnPreferenceChangeListener { _, _ ->
+            setOnPreferenceChangeListener { _, newValue ->
+                // Save the new value FIRST, then apply, then recreate
+                // This fixes the "need to select twice" bug
+                PreferenceManager.getDefaultSharedPreferences(requireContext())
+                    .edit().putString("app_theme", newValue.toString()).apply()
+                App.applyTheme(requireContext())
                 activity?.recreate()
-                true
+                false // return false because we already saved it manually
             }
         }
     }

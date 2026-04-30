@@ -63,6 +63,7 @@ class AudioMirrorActivity : AppCompatActivity() {
     private var currentHotspotSsid = ""
     private var currentHotspotPass = ""
     private var currentMode = AudioMode.MIC_ONLY
+    private var currentTheme: String = "dark"
     private var lastQrContent = ""
 
     // Derived state — always read from service/prefs, not stored locally
@@ -149,6 +150,8 @@ class AudioMirrorActivity : AppCompatActivity() {
     // ── Lifecycle ──────────────────────────────────────────────────────────────
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        currentTheme = androidx.preference.PreferenceManager
+            .getDefaultSharedPreferences(this).getString("app_theme", "dark") ?: "dark"
         App.applyTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_mirror)
@@ -190,6 +193,15 @@ class AudioMirrorActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        // Detect theme change — if user changed theme in Settings, recreate this activity too
+        val newTheme = androidx.preference.PreferenceManager
+            .getDefaultSharedPreferences(this).getString("app_theme", "dark") ?: "dark"
+        if (newTheme != currentTheme) {
+            currentTheme = newTheme
+            App.applyTheme(this)
+            recreate()
+            return
+        }
         App.applyTheme(this)
         registerReceiver(streamReceiver, IntentFilter(AudioStreamService.ACTION_STATUS))
         registerReceiver(playReceiver, IntentFilter(AudioPlaybackService.ACTION_STATUS))

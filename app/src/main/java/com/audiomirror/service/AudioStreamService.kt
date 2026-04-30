@@ -18,6 +18,7 @@ import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.IBinder
+import android.content.pm.ServiceInfo
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -79,7 +80,11 @@ class AudioStreamService : Service() {
         }
 
         createNotificationChannel()
-        startForeground(NOTIFICATION_ID, buildNotification())
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            startForeground(NOTIFICATION_ID, buildNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
+        } else {
+            startForeground(NOTIFICATION_ID, buildNotification())
+        }
 
         // Save running state
         isServiceRunning = true
@@ -320,12 +325,6 @@ class AudioStreamService : Service() {
     }
 
     private fun safeClose(socket: Socket?) { try { socket?.close() } catch (_: Exception) {} }
-
-    override fun onTaskRemoved(rootIntent: Intent?) {
-        super.onTaskRemoved(rootIntent)
-        // Keep streaming even when app is cleared from recents
-        // Do NOT call stopSelf() here
-    }
 
     override fun onDestroy() {
         super.onDestroy()

@@ -14,6 +14,7 @@ import android.media.AudioTrack
 import android.media.MediaRecorder
 import android.os.Build
 import android.os.IBinder
+import android.content.pm.ServiceInfo
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.audiomirror.AudioMode
@@ -49,7 +50,11 @@ class AudioPlaybackService : Service() {
         audioMode = AudioMode.fromKey(intent.getStringExtra(EXTRA_MODE))
 
         createNotificationChannel()
-        startForeground(NOTIFICATION_ID, buildNotification(host))
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            startForeground(NOTIFICATION_ID, buildNotification(host), ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
+        } else {
+            startForeground(NOTIFICATION_ID, buildNotification(host))
+        }
         startPlayback(host, port)
         return START_STICKY
     }
@@ -189,11 +194,6 @@ class AudioPlaybackService : Service() {
 
     private fun safeClose(socket: Socket?) {
         try { socket?.close() } catch (_: Exception) {}
-    }
-
-    override fun onTaskRemoved(rootIntent: Intent?) {
-        super.onTaskRemoved(rootIntent)
-        // Keep listening even when app is cleared from recents
     }
 
     override fun onDestroy() {
