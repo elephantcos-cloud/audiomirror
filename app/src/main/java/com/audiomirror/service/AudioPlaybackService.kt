@@ -191,6 +191,11 @@ class AudioPlaybackService : Service() {
         try { socket?.close() } catch (_: Exception) {}
     }
 
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+        // Keep listening even when app is cleared from recents
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         isRunning = false

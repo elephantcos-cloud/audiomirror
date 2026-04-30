@@ -321,6 +321,12 @@ class AudioStreamService : Service() {
 
     private fun safeClose(socket: Socket?) { try { socket?.close() } catch (_: Exception) {} }
 
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+        // Keep streaming even when app is cleared from recents
+        // Do NOT call stopSelf() here
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         isRunning = false

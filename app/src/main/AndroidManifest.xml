@@ -44,16 +44,19 @@
             android:parentActivityName=".activity.AudioMirrorActivity"
             android:exported="false" />
 
+        <!-- stopWithTask="false" keeps service alive when app is cleared from recents -->
         <service
             android:name=".service.AudioStreamService"
             android:enabled="true"
             android:exported="false"
+            android:stopWithTask="false"
             android:foregroundServiceType="microphone" />
 
         <service
             android:name=".service.AudioPlaybackService"
             android:enabled="true"
             android:exported="false"
+            android:stopWithTask="false"
             android:foregroundServiceType="microphone" />
 
     </application>

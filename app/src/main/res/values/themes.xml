@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- BASE DARK (default) -->
+    <!-- BASE — DayNight auto-switches based on setDefaultNightMode() in App.kt -->
     <style name="Theme.AudioMirror" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">#6200EE</item>
         <item name="colorPrimaryVariant">#5500CC</item>
@@ -9,26 +9,9 @@
         <item name="colorSecondary">#03DAC5</item>
         <item name="colorOnSecondary">#000000</item>
         <item name="android:statusBarColor">#5500CC</item>
-        <item name="android:windowBackground">#121212</item>
     </style>
 
     <style name="Theme.AudioMirror.NoActionBar" parent="Theme.AudioMirror">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <!-- LIGHT -->
-    <style name="Theme.AudioMirror.Light" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="colorPrimary">#6200EE</item>
-        <item name="colorPrimaryVariant">#5500CC</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
-        <item name="colorSecondary">#018786</item>
-        <item name="colorOnSecondary">#FFFFFF</item>
-        <item name="android:statusBarColor">#5500CC</item>
-        <item name="android:windowBackground">#FFFFFF</item>
-    </style>
-
-    <style name="Theme.AudioMirror.Light.NoActionBar" parent="Theme.AudioMirror.Light">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

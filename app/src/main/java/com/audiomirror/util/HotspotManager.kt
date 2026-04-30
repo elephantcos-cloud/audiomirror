@@ -42,9 +42,29 @@ class HotspotManager(private val context: Context) {
             wifiManager.startLocalOnlyHotspot(object : WifiManager.LocalOnlyHotspotCallback() {
                 override fun onStarted(reservation: WifiManager.LocalOnlyHotspotReservation) {
                     hotspotReservation = reservation
-                    val config = reservation.wifiConfiguration
-                    val ssid = config?.SSID ?: generateSsid()
-                    val password = config?.preSharedKey ?: generatePassword()
+
+                    val ssid: String
+                    val password: String
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        // Android 13+ (API 33+): wifiConfiguration is null, use softApConfiguration
+                        try {
+                            val softApConfig = reservation.softApConfiguration
+                            ssid = softApConfig.ssid ?: generateSsid()
+                            password = softApConfig.passphrase ?: generatePassword()
+                        } catch (e: Exception) {
+                            Log.e(TAG, "softApConfiguration error, using fallback", e)
+                            onFailed?.invoke()
+                            return
+                        }
+                    } else {
+                        // Android 8-12: use wifiConfiguration
+                        @Suppress("DEPRECATION")
+                        val config = reservation.wifiConfiguration
+                        ssid = config?.SSID ?: generateSsid()
+                        password = config?.preSharedKey ?: generatePassword()
+                    }
+
                     Log.d(TAG, "Hotspot started: SSID=$ssid")
                     onStarted?.invoke(ssid, password)
                 }
@@ -87,7 +107,6 @@ class HotspotManager(private val context: Context) {
                 preSharedKey = password
                 allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK)
             }
-            // disable wifi first
             wifiManager.isWifiEnabled = false
 
             val method = wifiManager.javaClass.getMethod(
